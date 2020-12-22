@@ -11,6 +11,7 @@
   "bugs": "https://github.com/leeye51456/youtube-thumbnail-popover/issues",
   "private": true,
   "scripts": {
+    "start": "webpack --watch",
     "build": "webpack"
   },
   "devDependencies": {
