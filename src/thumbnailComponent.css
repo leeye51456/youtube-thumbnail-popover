@@ -1,0 +1,8 @@
+.ytpext-thumbnail-container {
+  position: absolute;
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 2px;
+  background-color: rgba(97, 97, 97, 0.9);
+  line-height: 0;
+}

@@ -1,3 +1,5 @@
+import './thumbnailcomponent.css';
+
 let component = null;
 const thumbnails = {
   videoId: '',
