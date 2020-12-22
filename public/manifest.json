@@ -1,6 +1,7 @@
 {
   "name": "YouTube Thumbnail Popover",
-  "version": "0.1.0-dev",
+  "version": "0.0.51456",
+  "version_name": "0.1.0-dev",
   "description": "Preview thumbnails of YouTube video links",
   "manifest_version": 2
 }
