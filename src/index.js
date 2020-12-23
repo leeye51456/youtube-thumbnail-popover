@@ -7,12 +7,12 @@ let thumbnail = null;
 
 const showThumbnail = function showThumbnailComponent(videoId, anchorRect) {
   const { left, right, top, bottom } = anchorRect;
-  const { innerWidth: viewportWidth, innerHeight: viewportHeight } = window;
+  const { scrollX, scrollY, innerWidth: viewportWidth, innerHeight: viewportHeight } = window;
   const popoverLeft = (left + popoverWidth < viewportWidth) ? left : (right - popoverWidth);
   const popoverTop = (bottom + popoverHeight < viewportHeight) ? bottom : (top - popoverHeight);
   thumbnail = getThumbnail(videoId);
-  thumbnail.style.left = `${popoverLeft}px`;
-  thumbnail.style.top = `${popoverTop}px`;
+  thumbnail.style.left = `${scrollX + popoverLeft}px`;
+  thumbnail.style.top = `${scrollY + popoverTop}px`;
   document.body.appendChild(thumbnail);
 };
 
