@@ -33,7 +33,7 @@ const getVideoId = function getYouTubeVideoIdFromUrl(url) {
     const matches = /^\/([0-9A-Za-z_-]+)/.exec(pathname);
     return matches ? matches[1] : null;
   } else if (/^((www|m)\.)?youtube\.com$/.test(hostname) && pathname.startsWith('/watch') && searchParams.has('v')) {
-    return searchParams.get('v');
+    return searchParams.get('v').replace(/[^0-9A-Za-z_-]+/, '');
   } else {
     return null;
   }
