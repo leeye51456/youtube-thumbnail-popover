@@ -1,12 +1,18 @@
 import { getThumbnail } from './thumbnailComponent';
 
+const popoverWidth = 336;
+const popoverHeight = 212;
+
 let thumbnail = null;
 
-const showThumbnail = function showThumbnailComponent(videoId, left, top) {
+const showThumbnail = function showThumbnailComponent(videoId, anchorRect) {
+  const { left, right, top, bottom } = anchorRect;
+  const { innerWidth: viewportWidth, innerHeight: viewportHeight } = window;
+  const popoverLeft = (left + popoverWidth < viewportWidth) ? left : (right - popoverWidth);
+  const popoverTop = (bottom + popoverHeight < viewportHeight) ? bottom : (top - popoverHeight);
   thumbnail = getThumbnail(videoId);
-  // FIXME - Thumbnail component should not overflow.
-  thumbnail.style.left = `${left}px`;
-  thumbnail.style.top = `${top}px`;
+  thumbnail.style.left = `${popoverLeft}px`;
+  thumbnail.style.top = `${popoverTop}px`;
   document.body.appendChild(thumbnail);
 };
 
@@ -43,9 +49,7 @@ const handleMouseEnter = function handleMouseEnterToAnchor(event) {
   // TODO - Check whether href attribute is correct YouTube video URL,
   //        and remove event listener if not YouTube video URL.
 
-  const { offsetLeft: left, offsetTop, offsetHeight } = event.target;
-  const top = offsetTop + offsetHeight;
-  showThumbnail(getVideoId(event.target.href), left, top);
+  showThumbnail(getVideoId(event.target.href), event.target.getBoundingClientRect());
 };
 
 const handleMouseLeave = function handleMouseLeaveFromAnchor() {
