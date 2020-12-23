@@ -11,6 +11,8 @@ const initializeThumbnail = function initializeThumbnailComponent() {
   container.className = 'ytpext-thumbnail-container';
 
   thumbnails.title = document.createElement('img');
+  thumbnails.title.width = 320;
+  thumbnails.title.height = 180;
   thumbnails.title.className = 'ytpext-thumbnail-title';
   container.appendChild(thumbnails.title);
 
