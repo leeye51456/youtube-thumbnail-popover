@@ -1,7 +1,7 @@
 import { getThumbnail } from './thumbnailComponent';
 
-const popoverWidth = 336; // (margin 0) + (padding 16px) + (width 320px)
-const popoverHeight = 274.5; // (margin 16px) + (padding 16px) + (gap 4px) + (height 180px) + (height 58.5px)
+const popoverWidth = 192; // (margin 0) + (padding 16px) + (width 176px)
+const popoverHeight = 166.5; // (margin 16px) + (padding 16px) + (gap 4px) + (height 99px) + (height 31.5px)
 
 let thumbnail = null;
 

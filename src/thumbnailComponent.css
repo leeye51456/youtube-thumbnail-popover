@@ -20,13 +20,13 @@
   grid-row: 1;
   grid-column: 1 / 4;
 
-  width: 320px;
-  height: 180px;
+  width: 176px;
+  height: 99px;
 }
 
 .ytpext-thumbnail-part {
   grid-row: 2;
 
-  width: 104px;
-  height: 58.5px;
+  width: 56px;
+  height: 31.5px;
 }
