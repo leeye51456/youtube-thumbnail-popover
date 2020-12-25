@@ -1,9 +1,32 @@
 .ytpext-thumbnail-container {
   will-change: top, left;
+
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+
   position: absolute;
+
   margin: 8px 0;
   padding: 8px;
   border-radius: 2px;
   background-color: rgba(97, 97, 97, 0.9);
+
   line-height: 0;
+}
+
+.ytpext-thumbnail-title {
+  grid-row: 1;
+  grid-column: 1 / 4;
+
+  width: 320px;
+  height: 180px;
+}
+
+.ytpext-thumbnail-part {
+  grid-row: 2;
+
+  width: 104px;
+  height: 58.5px;
 }
