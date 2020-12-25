@@ -36,10 +36,10 @@ const updateThumbnail = function updateThumbnailComponent(videoId) {
     return component;
   }
 
-  thumbnails.title.src = `https://i.ytimg.com/vi_webp/${videoId}/mqdefault.webp`;
-  thumbnails.beginning.src = `https://i.ytimg.com/vi_webp/${videoId}/mq1.webp`;
-  thumbnails.middle.src = `https://i.ytimg.com/vi_webp/${videoId}/mq2.webp`;
-  thumbnails.end.src = `https://i.ytimg.com/vi_webp/${videoId}/mq3.webp`;
+  thumbnails.title.src = `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`;
+  thumbnails.beginning.src = `https://i.ytimg.com/vi/${videoId}/mq1.jpg`;
+  thumbnails.middle.src = `https://i.ytimg.com/vi/${videoId}/mq2.jpg`;
+  thumbnails.end.src = `https://i.ytimg.com/vi/${videoId}/mq3.jpg`;
   thumbnails.videoId = videoId;
   return component;
 };
