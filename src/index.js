@@ -61,5 +61,34 @@ const addEventListenerToAnchor = function addMouseEventListenerToAnchor(anchor) 
   anchor.addEventListener('mouseleave', handleMouseLeave);
 };
 
+const isAnchor = function isAnchorWithHrefAndText(node) {
+  return node.nodeName.toUpperCase() === 'A' && node.href && node.innerText;
+};
+const isAnchorToYouTube = function isAnchorToYouTubeVideo(node) {
+  return /(youtube\.com\/watch|youtu\.be\/)/.test(node.href);
+};
+const hasSameHrefAndText = function hasSameHrefAndText(node) {
+  const innerText = node.innerText.replace(/^https?:\/\/(m\.|www\.)?/, '').slice(0, 25);
+  const href = node.href.replace(/^https?:\/\/(m\.|www\.)?/, '').slice(0, 25);
+  return innerText === href;
+};
+
+const handleReceivedChanges = function applyMutations(mutations, observer) {
+  for (const { addedNodes } of mutations) {
+    for (const node of addedNodes) {
+      if (isAnchor(node) && isAnchorToYouTube(node) && hasSameHrefAndText(node)) {
+        addEventListenerToAnchor(node);
+      }
+    }
+  }
+};
+
 document.querySelectorAll('a[href*="youtube.com/watch"], a[href*="youtu.be/"]')
   .forEach(addEventListenerToAnchor);
+
+const ob = new MutationObserver(handleReceivedChanges);
+const observerOptions = {
+  childList: true,
+  subtree: true,
+};
+ob.observe(document.body, observerOptions);
