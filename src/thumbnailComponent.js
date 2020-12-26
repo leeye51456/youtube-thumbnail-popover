@@ -9,11 +9,9 @@ const thumbnails = {
   end: null,
 };
 
-const createImgElement = function createImgElementWithAttributes({ width, height, className }) {
+const createImgElement = function createImgElementWithAttributes(attributes) {
   const img = document.createElement('img');
-  img.width = width;
-  img.height = height;
-  img.className = className;
+  Object.assign(img, attributes);
   return img;
 }
 
