@@ -56,7 +56,7 @@ const handleMouseLeave = function handleMouseLeaveFromAnchor() {
   hideThumbnail();
 };
 
-const addEventListenerToAnchor = function addMouseEventListenerToAnchor(anchor) {
+const addMouseEventListener = function addMouseEventListenerToAnchor(anchor) {
   anchor.addEventListener('mouseenter', handleMouseEnter);
   anchor.addEventListener('mouseleave', handleMouseLeave);
 };
@@ -73,18 +73,21 @@ const hasSameHrefAndText = function hasSameHrefAndText(node) {
   return innerText === href;
 };
 
-const handleReceivedChanges = function applyMutations(mutations, observer) {
-  for (const { addedNodes } of mutations) {
-    for (const node of addedNodes) {
-      if (isAnchor(node) && isAnchorToYouTube(node) && hasSameHrefAndText(node)) {
-        addEventListenerToAnchor(node);
-      }
+const addEventListenerToAnchors = function addEventListenerToAnchorNodes(nodes) {
+  for (const node of nodes) {
+    if (isAnchor(node) && isAnchorToYouTube(node) && hasSameHrefAndText(node)) {
+      addMouseEventListener(node);
     }
   }
 };
 
-document.querySelectorAll('a[href*="youtube.com/watch"], a[href*="youtu.be/"]')
-  .forEach(addEventListenerToAnchor);
+const handleReceivedChanges = function applyMutations(mutations, observer) {
+  for (const { addedNodes } of mutations) {
+    addEventListenerToAnchors(addedNodes);
+  }
+};
+
+addEventListenerToAnchors(document.querySelectorAll('a[href*="youtube.com/watch"], a[href*="youtu.be/"]'));
 
 const ob = new MutationObserver(handleReceivedChanges);
 const observerOptions = {
