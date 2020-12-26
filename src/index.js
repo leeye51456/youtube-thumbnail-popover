@@ -92,6 +92,7 @@ const handleReceivedChanges = function applyMutations(mutations, observer) {
 addEventListenerToAnchors(document.querySelectorAll('a[href*="youtube.com/watch"], a[href*="youtu.be/"]'));
 
 const ob = new MutationObserver(handleReceivedChanges);
+// FIXME - Whenever `href` attribute of `<a>` element changes, its event listener should be added or removed.
 const observerOptions = {
   childList: true,
   subtree: true,
