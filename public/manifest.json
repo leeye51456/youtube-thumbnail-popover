@@ -3,5 +3,13 @@
   "version": "0.0.51456",
   "version_name": "0.1.0-dev",
   "description": "Preview thumbnails of YouTube video links",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "run_at": "document_end",
+      "css": ["index.css"],
+      "js": ["index.js"]
+    }
+  ],
   "manifest_version": 2
 }
