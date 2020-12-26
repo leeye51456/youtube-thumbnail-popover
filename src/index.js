@@ -46,10 +46,12 @@ const getVideoId = function getYouTubeVideoIdFromUrl(url) {
 };
 
 const handleMouseEnter = function handleMouseEnterToAnchor(event) {
-  // TODO - Check whether href attribute is correct YouTube video URL,
-  //        and remove event listener if not YouTube video URL.
-
-  showThumbnail(getVideoId(event.target.href), event.target.getBoundingClientRect());
+  if (/(www\.|m\.)?youtube\.com\/watch\?|youtu\.be\/.+/.test(event.target.href)) {
+    showThumbnail(getVideoId(event.target.href), event.target.getBoundingClientRect());
+  } else {
+    event.target.removeEventListener('mouseenter', handleMouseEnter);
+    event.target.removeEventListener('mouseleave', handleMouseLeave);
+  }
 };
 
 const handleMouseLeave = function handleMouseLeaveFromAnchor() {
