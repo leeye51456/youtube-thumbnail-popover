@@ -24,16 +24,16 @@ const hideThumbnail = function hideThumbnailComponent() {
   }
 };
 
-const getUrlWithHttps = function supposeProtocolOfUrlHttps(url) {
-  if (!/^https:\/\//.test(url)) {
-    return url.replace(/^(.+:\/\/)?/, 'https://');
+const getUrlWithHttps = function supposeProtocolOfUrlHttps(urlString) {
+  if (!urlString.startsWith('https://')) {
+    return urlString.replace(/^(.+:\/\/)?/, 'https://');
   }
-  return url;
+  return urlString;
 };
 
-const getVideoId = function getYouTubeVideoIdFromUrl(url) {
-  const urlObject = new URL(getUrlWithHttps(url));
-  const { hostname, pathname, searchParams } = urlObject;
+const getVideoId = function getYouTubeVideoIdFromUrl(urlString) {
+  const url = new URL(getUrlWithHttps(urlString.startsWith('/') ? location.host + urlString : urlString));
+  const { hostname, pathname, searchParams } = url;
 
   if (hostname === 'youtu.be') {
     const matches = /^\/([0-9A-Za-z_-]+)/.exec(pathname);
@@ -63,21 +63,24 @@ const addMouseEventListener = function addMouseEventListenerToAnchor(anchor) {
   anchor.addEventListener('mouseleave', handleMouseLeave);
 };
 
-const isAnchor = function isAnchorWithHrefAndText(node) {
+const isTextAnchor = function isAnchorWithHrefAndText(node) {
   return node.nodeName.toUpperCase() === 'A' && node.href && node.innerText;
 };
-const isAnchorToYouTube = function isAnchorToYouTubeVideo(node) {
-  return /(youtube\.com\/watch|youtu\.be\/)/.test(node.href);
-};
-const hasSameHrefAndText = function hasSameHrefAndText(node) {
-  const innerText = node.innerText.replace(/^https?:\/\/(m\.|www\.)?/, '').slice(0, 25);
-  const href = node.href.replace(/^https?:\/\/(m\.|www\.)?/, '').slice(0, 25);
-  return innerText === href;
+const validateAnchor = function hasHrefAndTextEquivalentUrl(node) {
+  if (!/^(https?:\/\/)?(www\.|m\.)?(youtube\.com\/watch\?|youtu\.be\/)/.test(node.innerText)) {
+    return false;
+  }
+  const innerTextVideoId = getVideoId(node.innerText);
+  if (!innerTextVideoId) {
+    return false;
+  }
+  const hrefVideoId = getVideoId(node.href);
+  return hrefVideoId.startsWith(innerTextVideoId);
 };
 
 const addEventListenerToAnchors = function addEventListenerToAnchorNodes(nodes) {
   for (const node of nodes) {
-    if (isAnchor(node) && isAnchorToYouTube(node) && hasSameHrefAndText(node)) {
+    if (isTextAnchor(node) && validateAnchor(node)) {
       addMouseEventListener(node);
     }
   }
