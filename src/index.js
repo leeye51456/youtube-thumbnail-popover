@@ -87,8 +87,15 @@ const addEventListenerToAnchors = function addEventListenerToAnchorNodes(nodes) 
 };
 
 const handleReceivedChanges = function applyMutations(mutations, observer) {
-  for (const { addedNodes } of mutations) {
-    addEventListenerToAnchors(addedNodes);
+  for (const mutation of mutations) {
+    switch (mutation.type) {
+      case 'childList':
+        addEventListenerToAnchors(mutation.addedNodes);
+        break;
+
+      default:
+        break;
+    }
   }
 };
 
