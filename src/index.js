@@ -63,6 +63,11 @@ const addMouseEventListener = function addMouseEventListenerToAnchor(anchor) {
   anchor.addEventListener('mouseleave', handleMouseLeave);
 };
 
+const removeMouseEventListener = function removeMouseEventListenerFromAnchor(anchor) {
+  anchor.removeEventListener('mouseenter', handleMouseEnter);
+  anchor.removeEventListener('mouseleave', handleMouseLeave);
+};
+
 const isTextAnchor = function isAnchorWithHrefAndText(node) {
   return node.nodeName.toUpperCase() === 'A' && node.href && node.innerText;
 };
