@@ -83,8 +83,9 @@ const validateAnchor = function hasHrefAndTextEquivalentUrl(node) {
   return hrefVideoId.startsWith(innerTextVideoId);
 };
 
-const addEventListenerToAnchors = function addEventListenerToAnchorNodes(nodes) {
+const updateEventListenerToAnchors = function updateEventListenerToAnchorNodes(nodes) {
   for (const node of nodes) {
+    removeMouseEventListener(node);
     if (isTextAnchor(node) && validateAnchor(node)) {
       addMouseEventListener(node);
     }
@@ -95,7 +96,7 @@ const handleReceivedChanges = function applyMutations(mutations, observer) {
   for (const mutation of mutations) {
     switch (mutation.type) {
       case 'childList':
-        addEventListenerToAnchors(mutation.addedNodes);
+        updateEventListenerToAnchors(mutation.addedNodes);
         break;
 
       default:
@@ -104,7 +105,7 @@ const handleReceivedChanges = function applyMutations(mutations, observer) {
   }
 };
 
-addEventListenerToAnchors(
+updateEventListenerToAnchors(
   document.querySelectorAll(
     location.hostname === 'www.youtube.com'
       ? 'a[href*="youtube.com/watch"],a[href*="youtu.be/"],a[href^="/watch"]'
