@@ -95,6 +95,12 @@ const updateEventListenerToAnchors = function updateEventListenerToAnchorNodes(n
 const handleReceivedChanges = function applyMutations(mutations, observer) {
   for (const mutation of mutations) {
     switch (mutation.type) {
+      case 'attributes':
+        if (mutation.attributeName === 'href') {
+          updateEventListenerToAnchors([mutation.target]);
+        }
+        break;
+
       case 'childList':
         updateEventListenerToAnchors(mutation.addedNodes);
         break;
@@ -114,9 +120,9 @@ updateEventListenerToAnchors(
 );
 
 const ob = new MutationObserver(handleReceivedChanges);
-// FIXME - Whenever `href` attribute of `<a>` element changes, its event listener should be added or removed.
 const observerOptions = {
   childList: true,
+  attributes: true,
   subtree: true,
 };
 ob.observe(document.body, observerOptions);
