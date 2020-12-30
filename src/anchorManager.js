@@ -3,7 +3,7 @@ import { getVideoId } from './urlUtils';
 
 const handleMouseEnter = function handleMouseEnterToAnchor(event) {
   if (/(www\.|m\.)?youtube\.com\/watch\?|youtu\.be\/.+/.test(event.target.href)) {
-    showThumbnail(getVideoId(event.target.href), event.target.getBoundingClientRect());
+    showThumbnail(getVideoId(event.target.href, true), event.target.getBoundingClientRect());
   } else {
     event.target.removeEventListener('mouseenter', handleMouseEnter);
     event.target.removeEventListener('mouseleave', handleMouseLeave);
@@ -31,12 +31,12 @@ const validateAnchor = function hasHrefAndTextEquivalentUrl(node) {
   if (!/^(https?:\/\/)?(www\.|m\.)?(youtube\.com\/watch\?|youtu\.be\/)/.test(node.innerText)) {
     return false;
   }
-  const innerTextVideoId = getVideoId(node.innerText);
-  if (!innerTextVideoId) {
+  const innerTextVideoIdPrefix = getVideoId(node.innerText, false);
+  if (!innerTextVideoIdPrefix) {
     return false;
   }
-  const hrefVideoId = getVideoId(node.href);
-  return hrefVideoId.startsWith(innerTextVideoId);
+  const hrefVideoId = getVideoId(node.href, true);
+  return hrefVideoId.startsWith(innerTextVideoIdPrefix);
 };
 
 export const updateEventListenerToAnchors = function updateEventListenerToAnchorNodes(nodes) {
