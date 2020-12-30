@@ -19,7 +19,5 @@ export const showThumbnail = function showThumbnailComponent(videoId, anchorRect
 export const hideThumbnail = function hideThumbnailComponent() {
   if (thumbnail) {
     thumbnail.remove();
-    thumbnail.style.left = '';
-    thumbnail.style.top = '';
   }
 };
