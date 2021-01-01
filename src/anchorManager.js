@@ -1,6 +1,13 @@
 import { showThumbnail, hideThumbnail } from './thumbnailManager';
 import { getVideoId } from './urlUtils';
 
+export const getAnchorQuery = function getAnchorQueryByHostname() {
+  if (location.hostname === 'www.youtube.com') {
+    return 'a[href*="youtube.com/watch"],a[href*="youtu.be/"],a[href^="/watch"]';
+  }
+  return 'a[href*="youtube.com/watch"],a[href*="youtu.be/"]';
+};
+
 const handleMouseEnter = function handleMouseEnterToAnchor(event) {
   if (/(www\.|m\.)?youtube\.com\/watch\?|youtu\.be\/.+/.test(event.target.href)) {
     showThumbnail(getVideoId(event.target.href, true), event.target.getBoundingClientRect());

@@ -1,4 +1,4 @@
-import { updateEventListenerToAnchors } from './anchorManager';
+import { getAnchorQuery, updateEventListenerToAnchors } from './anchorManager';
 
 const handleReceivedChanges = function applyMutations(mutations, observer) {
   for (const mutation of mutations) {
@@ -17,13 +17,7 @@ const handleReceivedChanges = function applyMutations(mutations, observer) {
   }
 };
 
-updateEventListenerToAnchors(
-  document.querySelectorAll(
-    location.hostname === 'www.youtube.com'
-      ? 'a[href*="youtube.com/watch"],a[href*="youtu.be/"],a[href^="/watch"]'
-      : 'a[href*="youtube.com/watch"],a[href*="youtu.be/"]'
-  )
-);
+updateEventListenerToAnchors(document.querySelectorAll(getAnchorQuery()));
 
 const ob = new MutationObserver(handleReceivedChanges);
 const observerOptions = {
