@@ -9,12 +9,7 @@ export const getAnchorQuery = function getAnchorQueryByHostname() {
 };
 
 const handleMouseEnter = function handleMouseEnterToAnchor(event) {
-  if (/(www\.|m\.)?youtube\.com\/watch\?|youtu\.be\/.+/.test(event.target.href)) {
-    showThumbnail(getVideoId(event.target.href, true), event.target.getBoundingClientRect());
-  } else {
-    event.target.removeEventListener('mouseenter', handleMouseEnter);
-    event.target.removeEventListener('mouseleave', handleMouseLeave);
-  }
+  showThumbnail(getVideoId(event.target.href, true), event.target.getBoundingClientRect());
 };
 
 const handleMouseLeave = function handleMouseLeaveFromAnchor() {
