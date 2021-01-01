@@ -51,6 +51,8 @@ export const updateEventListenerToAnchors = function updateEventListenerToAnchor
     removeMouseEventListener(node);
     if (isTextAnchor(node) && validateAnchor(node)) {
       addMouseEventListener(node);
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      updateEventListenerToAnchorNodes(node.querySelectorAll(getAnchorQuery()));
     }
   }
 };
