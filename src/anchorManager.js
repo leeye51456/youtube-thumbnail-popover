@@ -43,9 +43,11 @@ const validateAnchor = function hasHrefAndTextEquivalentUrl(node) {
 
 export const updateEventListenerToAnchors = function updateEventListenerToAnchorNodes(nodes) {
   for (const node of nodes) {
-    removeMouseEventListener(node);
-    if (isTextAnchor(node) && validateAnchor(node)) {
-      addMouseEventListener(node);
+    if (isTextAnchor(node)) {
+      removeMouseEventListener(node);
+      if (validateAnchor(node)) {
+        addMouseEventListener(node);
+      }
     } else if (node.nodeType === Node.ELEMENT_NODE) {
       updateEventListenerToAnchorNodes(node.querySelectorAll(getAnchorQuery()));
     }
