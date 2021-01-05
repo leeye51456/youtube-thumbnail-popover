@@ -2,7 +2,7 @@ import { showThumbnail, hideThumbnail } from './thumbnailManager';
 import { getVideoId } from './urlUtils';
 
 export const getAnchorQuery = function getAnchorQueryByHostname() {
-  if (location.hostname === 'www.youtube.com') {
+  if (/(www|m)\.youtube\.com/.test(location.hostname)) {
     return 'a[href*="youtube.com/watch"],a[href*="youtu.be/"],a[href^="/watch"]';
   }
   return 'a[href*="youtube.com/watch"],a[href*="youtu.be/"]';
