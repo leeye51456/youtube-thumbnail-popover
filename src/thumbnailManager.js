@@ -5,7 +5,7 @@ const popoverHeight = 166.5; // (margin 16px) + (padding 16px) + (gap 4px) + (he
 
 let thumbnail = null;
 
-export const showThumbnail = function showThumbnailComponent(videoId, anchorRect) {
+export const showThumbnail = (videoId, anchorRect) => {
   const { left, right, top, bottom } = anchorRect;
   const { scrollX, scrollY, innerWidth: viewportWidth, innerHeight: viewportHeight } = window;
   const popoverLeft = (left + popoverWidth < viewportWidth) ? left : (right - popoverWidth);
@@ -16,7 +16,7 @@ export const showThumbnail = function showThumbnailComponent(videoId, anchorRect
   document.body.appendChild(thumbnail);
 };
 
-export const hideThumbnail = function hideThumbnailComponent() {
+export const hideThumbnail = () => {
   if (thumbnail) {
     thumbnail.remove();
   }

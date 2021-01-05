@@ -9,13 +9,13 @@ const thumbnails = {
   end: null,
 };
 
-const createImgElement = function createImgElementWithAttributes(attributes) {
+const createImgElement = (attributes) => {
   const img = document.createElement('img');
   Object.assign(img, attributes);
   return img;
 }
 
-const initializeThumbnail = function initializeThumbnailComponent() {
+const initializeThumbnailComponent = () => {
   const container = document.createElement('div');
   container.className = 'ytpext-thumbnail-container';
 
@@ -29,7 +29,7 @@ const initializeThumbnail = function initializeThumbnailComponent() {
   component = container;
 }
 
-const updateThumbnail = function updateThumbnailComponent(videoId) {
+const updateThumbnailComponent = (videoId) => {
   if (videoId === thumbnails.videoId) {
     return component;
   }
@@ -42,10 +42,10 @@ const updateThumbnail = function updateThumbnailComponent(videoId) {
   return component;
 };
 
-export const getThumbnail = function createOrUpdateThumbnailComponent(videoId) {
+export const getThumbnail = (videoId) => {
   if (!component) {
-    initializeThumbnail();
+    initializeThumbnailComponent();
   }
 
-  return updateThumbnail(videoId);
+  return updateThumbnailComponent(videoId);
 };

@@ -1,6 +1,6 @@
 import { getAnchorQuery, updateEventListenerToAnchors } from './eventManager';
 
-const handleReceivedChanges = function applyMutations(mutations, observer) {
+const handleReceivedChanges = (mutations, observer) => {
   for (const mutation of mutations) {
     switch (mutation.type) {
       case 'attributes':

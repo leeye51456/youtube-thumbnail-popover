@@ -1,39 +1,39 @@
 import { showThumbnail, hideThumbnail } from './thumbnailManager';
 import { getVideoId } from './urlUtils';
 
-const isInYouTube = function isLocationYouTube() {
+const isInYouTube = () => {
   return /(www|m)\.youtube\.com/.test(location.hostname);
 };
 
-export const getAnchorQuery = function getAnchorQueryByHostname() {
+export const getAnchorQuery = () => {
   if (isInYouTube()) {
     return 'a[href*="youtube.com/watch"],a[href*="youtu.be/"],a[href^="/watch"]';
   }
   return 'a[href*="youtube.com/watch"],a[href*="youtu.be/"]';
 };
 
-const handleMouseEnter = function handleMouseEnterToAnchor(event) {
+const handleAnchorMouseEnter = (event) => {
   showThumbnail(getVideoId(event.target.href, true), event.target.getBoundingClientRect());
 };
 
-const handleMouseLeave = function handleMouseLeaveFromAnchor() {
+const handleAnchorMouseLeave = () => {
   hideThumbnail();
 };
 
-const addMouseEventListener = function addMouseEventListenerToAnchor(anchor) {
-  anchor.addEventListener('mouseenter', handleMouseEnter);
-  anchor.addEventListener('mouseleave', handleMouseLeave);
+const addEventListenersToAnchor = (anchor) => {
+  anchor.addEventListener('mouseenter', handleAnchorMouseEnter);
+  anchor.addEventListener('mouseleave', handleAnchorMouseLeave);
 };
 
-const removeMouseEventListener = function removeMouseEventListenerFromAnchor(anchor) {
-  anchor.removeEventListener('mouseenter', handleMouseEnter);
-  anchor.removeEventListener('mouseleave', handleMouseLeave);
+const removeEventListenersFromAnchor = (anchor) => {
+  anchor.removeEventListener('mouseenter', handleAnchorMouseEnter);
+  anchor.removeEventListener('mouseleave', handleAnchorMouseLeave);
 };
 
-const isTextAnchor = function isAnchorWithHrefAndText(node) {
+const isTextAnchor = (node) => {
   return node.nodeName.toUpperCase() === 'A' && node.href && node.innerText;
 };
-const validateAnchor = function hasHrefAndTextEquivalentUrl(node) {
+const validateAnchor = (node) => {
   if (!/^(https?:\/\/)?(www\.|m\.)?(youtube\.com\/watch\?|youtu\.be\/)/.test(node.innerText)) {
     return false;
   }
@@ -45,12 +45,12 @@ const validateAnchor = function hasHrefAndTextEquivalentUrl(node) {
   return hrefVideoId.startsWith(innerTextVideoIdPrefix);
 };
 
-export const updateEventListenerToAnchors = function updateEventListenerToAnchorNodes(nodes) {
+export const updateEventListenerToAnchors = (nodes) => {
   for (const node of nodes) {
     if (isTextAnchor(node)) {
-      removeMouseEventListener(node);
+      removeEventListenersFromAnchor(node);
       if (validateAnchor(node)) {
-        addMouseEventListener(node);
+        addEventListenersToAnchor(node);
       }
     } else if (node.nodeType === Node.ELEMENT_NODE) {
       updateEventListenerToAnchorNodes(node.querySelectorAll(getAnchorQuery()));
