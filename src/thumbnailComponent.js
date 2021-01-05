@@ -13,21 +13,21 @@ const createImgElement = (attributes) => {
   const img = document.createElement('img');
   Object.assign(img, attributes);
   return img;
-}
+};
 
 const initializeThumbnailComponent = () => {
   const container = document.createElement('div');
   container.className = 'ytpext-thumbnail-container';
 
-  thumbnails.title = createImgElement({ width: 320, height: 180, className: 'ytpext-thumbnail-title'});
+  thumbnails.title = createImgElement({ width: 320, height: 180, className: 'ytpext-thumbnail-title' });
   container.appendChild(thumbnails.title);
   for (const name of ['beginning', 'middle', 'end']) {
-    thumbnails[name] = createImgElement({ width: 320, height: 180, className: 'ytpext-thumbnail-part'});
+    thumbnails[name] = createImgElement({ width: 320, height: 180, className: 'ytpext-thumbnail-part' });
     container.appendChild(thumbnails[name]);
   }
 
   component = container;
-}
+};
 
 const updateThumbnailComponent = (videoId) => {
   if (videoId === thumbnails.videoId) {
