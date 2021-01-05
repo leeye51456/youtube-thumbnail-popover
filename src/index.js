@@ -1,4 +1,4 @@
-import { getAnchorQuery, updateEventListenerToAnchors } from './anchorManager';
+import { getAnchorQuery, updateEventListenerToAnchors } from './eventManager';
 
 const handleReceivedChanges = function applyMutations(mutations, observer) {
   for (const mutation of mutations) {
