@@ -2,13 +2,7 @@ import { showThumbnail, hideThumbnail } from './thumbnailManager';
 import { getVideoId } from './urlUtils';
 
 const isInYouTube = /(www|m)\.youtube\.com/.test(location.hostname);
-
-export const getAnchorQuery = () => {
-  if (isInYouTube) {
-    return 'a[href*="youtube.com/watch"],a[href*="youtu.be/"],a[href^="/watch"]';
-  }
-  return 'a[href*="youtube.com/watch"],a[href*="youtu.be/"]';
-};
+const anchorQuery = `a[href*="youtube.com/watch"],a[href*="youtu.be/"]${isInYouTube ? ',a[href^="/watch"]' : ''}`;
 
 const handleAnchorMouseEnter = (event) => {
   showThumbnail(getVideoId(event.target.href, true), event.target.getBoundingClientRect());
@@ -69,7 +63,7 @@ const updateEventListenersForVideoTitle = (h1Node) => {
 };
 
 export const findTargetsAndUpdateEventListeners = (parentNode) => {
-  for (const anchorNode of parentNode.querySelectorAll(getAnchorQuery())) {
+  for (const anchorNode of parentNode.querySelectorAll(anchorQuery)) {
     updateEventListenersForAnchors(anchorNode);
   }
   if (isInYouTube) {
