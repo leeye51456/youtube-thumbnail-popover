@@ -14,44 +14,77 @@ const handleAnchorMouseEnter = (event) => {
   showThumbnail(getVideoId(event.target.href, true), event.target.getBoundingClientRect());
 };
 
-const handleAnchorMouseLeave = () => {
+const handleTitleMouseEnter = (event) => {
+  showThumbnail(getVideoId(location.href, true), event.target.getBoundingClientRect());
+};
+
+const handleMouseLeave = () => {
   hideThumbnail();
 };
 
-const addEventListenersToAnchor = (anchor) => {
-  anchor.addEventListener('mouseenter', handleAnchorMouseEnter);
-  anchor.addEventListener('mouseleave', handleAnchorMouseLeave);
+const addEventListenersToAnchor = (anchorNode) => {
+  anchorNode.addEventListener('mouseenter', handleAnchorMouseEnter);
+  anchorNode.addEventListener('mouseleave', handleMouseLeave);
 };
 
-const removeEventListenersFromAnchor = (anchor) => {
-  anchor.removeEventListener('mouseenter', handleAnchorMouseEnter);
-  anchor.removeEventListener('mouseleave', handleAnchorMouseLeave);
+const removeEventListenersFromAnchor = (anchorNode) => {
+  anchorNode.removeEventListener('mouseenter', handleAnchorMouseEnter);
+  anchorNode.removeEventListener('mouseleave', handleMouseLeave);
 };
 
-const isTextAnchor = (node) => {
-  return node.nodeName.toUpperCase() === 'A' && node.href && node.innerText;
+const addEventListenersToTitle = (h1Node) => {
+  h1Node.addEventListener('mouseenter', handleTitleMouseEnter);
+  h1Node.addEventListener('mouseleave', handleMouseLeave);
 };
-const validateAnchor = (node) => {
-  if (!/^(https?:\/\/)?(www\.|m\.)?(youtube\.com\/watch\?|youtu\.be\/)/.test(node.innerText)) {
+
+const removeEventListenersFromTitle = (h1Node) => {
+  h1Node.removeEventListener('mouseenter', handleTitleMouseEnter);
+  h1Node.removeEventListener('mouseleave', handleMouseLeave);
+};
+
+const validateAnchor = (anchorNode) => {
+  if (!/^(https?:\/\/)?(www\.|m\.)?(youtube\.com\/watch\?|youtu\.be\/)/.test(anchorNode.innerText)) {
     return false;
   }
-  const innerTextVideoIdPrefix = getVideoId(node.innerText, false);
+  const innerTextVideoIdPrefix = getVideoId(anchorNode.innerText, false);
   if (!innerTextVideoIdPrefix) {
     return false;
   }
-  const hrefVideoId = getVideoId(node.href, true);
+  const hrefVideoId = getVideoId(anchorNode.href, true);
   return hrefVideoId.startsWith(innerTextVideoIdPrefix);
 };
 
-export const updateEventListenerToAnchors = (nodes) => {
-  for (const node of nodes) {
-    if (isTextAnchor(node)) {
-      removeEventListenersFromAnchor(node);
-      if (validateAnchor(node)) {
-        addEventListenersToAnchor(node);
-      }
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      updateEventListenerToAnchorNodes(node.querySelectorAll(getAnchorQuery()));
+const updateEventListenersForAnchors = (anchorNode) => {
+  removeEventListenersFromAnchor(anchorNode);
+  if (validateAnchor(anchorNode)) {
+    addEventListenersToAnchor(anchorNode);
+  }
+};
+
+const updateEventListenersForVideoTitle = (h1Node) => {
+  removeEventListenersFromTitle(h1Node);
+  if (h1Node.classList.contains('title') && h1Node.classList.contains('ytd-video-primary-info-renderer')) {
+    addEventListenersToTitle(h1Node);
+  }
+};
+
+export const findTargetsAndUpdateEventListeners = (parentNode) => {
+  for (const anchorNode of parentNode.querySelectorAll(getAnchorQuery())) {
+    updateEventListenersForAnchors(anchorNode);
+  }
+  if (isInYouTube) {
+    for (const h1Node of parentNode.querySelectorAll('h1.title.ytd-video-primary-info-renderer')) {
+      updateEventListenersForVideoTitle(h1Node);
     }
+  }
+};
+
+export const updateEventListeners = (node) => {
+  if (node.nodeName.toUpperCase() === 'A') {
+    updateEventListenersForAnchors(node);
+  } else if (isInYouTube && node.nodeName.toUpperCase() === 'H1') {
+    updateEventListenersForVideoTitle(node);
+  } else if (node.nodeType === Node.ELEMENT_NODE) {
+    findTargetsAndUpdateEventListeners(node);
   }
 };

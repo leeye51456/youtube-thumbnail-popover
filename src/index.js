@@ -1,14 +1,16 @@
-import { getAnchorQuery, updateEventListenerToAnchors } from './eventManager';
+import { findTargetsAndUpdateEventListeners, updateEventListeners } from './eventManager';
 
 const handleReceivedChanges = (mutations, observer) => {
   for (const mutation of mutations) {
     switch (mutation.type) {
       case 'attributes':
-        updateEventListenerToAnchors([mutation.target]);
+        updateEventListeners(mutation.target);
         break;
 
       case 'childList':
-        updateEventListenerToAnchors(mutation.addedNodes);
+        for (const node of mutation.addedNodes) {
+          updateEventListeners(node);
+        }
         break;
 
       default:
@@ -17,7 +19,7 @@ const handleReceivedChanges = (mutations, observer) => {
   }
 };
 
-updateEventListenerToAnchors(document.querySelectorAll(getAnchorQuery()));
+findTargetsAndUpdateEventListeners(document);
 
 const ob = new MutationObserver(handleReceivedChanges);
 const observerOptions = {
