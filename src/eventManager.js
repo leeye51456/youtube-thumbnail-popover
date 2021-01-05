@@ -1,8 +1,12 @@
 import { showThumbnail, hideThumbnail } from './thumbnailManager';
 import { getVideoId } from './urlUtils';
 
+const isInYouTube = function isLocationYouTube() {
+  return /(www|m)\.youtube\.com/.test(location.hostname);
+};
+
 export const getAnchorQuery = function getAnchorQueryByHostname() {
-  if (/(www|m)\.youtube\.com/.test(location.hostname)) {
+  if (isInYouTube()) {
     return 'a[href*="youtube.com/watch"],a[href*="youtu.be/"],a[href^="/watch"]';
   }
   return 'a[href*="youtube.com/watch"],a[href*="youtu.be/"]';
