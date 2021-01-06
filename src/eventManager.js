@@ -8,10 +8,6 @@ const handleAnchorMouseEnter = (event) => {
   showThumbnail(getVideoId(event.target.href, true), event.target.getBoundingClientRect());
 };
 
-const handleTitleMouseEnter = (event) => {
-  showThumbnail(getVideoId(location.href, true), event.target.getBoundingClientRect());
-};
-
 const handleMouseLeave = () => {
   hideThumbnail();
 };
@@ -24,16 +20,6 @@ const addEventListenersToAnchor = (anchorNode) => {
 const removeEventListenersFromAnchor = (anchorNode) => {
   anchorNode.removeEventListener('mouseenter', handleAnchorMouseEnter);
   anchorNode.removeEventListener('mouseleave', handleMouseLeave);
-};
-
-const addEventListenersToTitle = (h1Node) => {
-  h1Node.addEventListener('mouseenter', handleTitleMouseEnter);
-  h1Node.addEventListener('mouseleave', handleMouseLeave);
-};
-
-const removeEventListenersFromTitle = (h1Node) => {
-  h1Node.removeEventListener('mouseenter', handleTitleMouseEnter);
-  h1Node.removeEventListener('mouseleave', handleMouseLeave);
 };
 
 const validateAnchor = (anchorNode) => {
@@ -55,29 +41,15 @@ const updateEventListenersForAnchors = (anchorNode) => {
   }
 };
 
-const updateEventListenersForVideoTitle = (h1Node) => {
-  removeEventListenersFromTitle(h1Node);
-  if (h1Node.classList.contains('title') && h1Node.classList.contains('ytd-video-primary-info-renderer')) {
-    addEventListenersToTitle(h1Node);
-  }
-};
-
 export const findTargetsAndUpdateEventListeners = (parentNode) => {
   for (const anchorNode of parentNode.querySelectorAll(anchorQuery)) {
     updateEventListenersForAnchors(anchorNode);
-  }
-  if (isInYouTube) {
-    for (const h1Node of parentNode.querySelectorAll('h1.title.ytd-video-primary-info-renderer')) {
-      updateEventListenersForVideoTitle(h1Node);
-    }
   }
 };
 
 export const updateEventListeners = (node) => {
   if (node.nodeName.toUpperCase() === 'A') {
     updateEventListenersForAnchors(node);
-  } else if (isInYouTube && node.nodeName.toUpperCase() === 'H1') {
-    updateEventListenersForVideoTitle(node);
   } else if (node.nodeType === Node.ELEMENT_NODE) {
     findTargetsAndUpdateEventListeners(node);
   }
