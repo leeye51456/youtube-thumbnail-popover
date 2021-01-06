@@ -31,6 +31,9 @@ const validateAnchor = (anchorNode) => {
     return false;
   }
   const hrefVideoId = getVideoId(anchorNode.href, true);
+  if (!hrefVideoId) {
+    return false;
+  }
   return hrefVideoId.startsWith(innerTextVideoIdPrefix);
 };
 

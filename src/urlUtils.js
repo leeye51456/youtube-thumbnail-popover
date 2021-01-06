@@ -21,14 +21,22 @@ const isFullYouTubeUrl = (url) => {
 };
 
 export const getVideoId = (urlString, strict) => {
-  const url = new URL(getUrlWithHttps(urlString.startsWith('/') ? location.host + urlString : urlString));
-  const { hostname, pathname, searchParams } = url;
+  if (!urlString) {
+    return null;
+  }
+
+  let url;
+  try {
+    url = new URL(getUrlWithHttps(urlString.startsWith('/') ? location.host + urlString : urlString));
+  } catch (error) {
+    return null;
+  }
 
   let matches;
-  if (hostname === 'youtu.be') {
-    matches = (strict ? shortUrlPathnameId : shortUrlPathnameIdPrefix).exec(pathname);
+  if (url.hostname === 'youtu.be') {
+    matches = (strict ? shortUrlPathnameId : shortUrlPathnameIdPrefix).exec(url.pathname);
   } else if (isFullYouTubeUrl(url)) {
-    matches = (strict ? fullUrlIdQuery : fullUrlIdQueryPrefix).exec(searchParams.get('v'));
+    matches = (strict ? fullUrlIdQuery : fullUrlIdQueryPrefix).exec(url.searchParams.get('v'));
   } else {
     return null;
   }
