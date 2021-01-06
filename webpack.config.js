@@ -3,6 +3,14 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const ZipPlugin = require('zip-webpack-plugin');
+
+const getZipFileName = () => {
+  const manifest = require('./public/manifest.json');
+  const name = manifest.name.toLowerCase().replace(/\s/g, '-');
+  const version = manifest.version.replace(/\./g, '_');
+  return `${name}-${version}.zip`;
+};
 
 module.exports = {
   entry: './src/index.js',
@@ -39,6 +47,10 @@ module.exports = {
       patterns: [
         { from: 'public', to: './' },
       ],
+    }),
+
+    new ZipPlugin({
+      filename: getZipFileName(),
     }),
   ],
 };
