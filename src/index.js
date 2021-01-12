@@ -1,15 +1,16 @@
 import { findTargetsAndUpdateEventListeners, updateEventListeners } from './eventManager';
 
 const handleReceivedChanges = (mutations, observer) => {
+  const hoveredAnchor = document.querySelector('a:hover');
   for (const mutation of mutations) {
     switch (mutation.type) {
       case 'attributes':
-        updateEventListeners(mutation.target);
+        updateEventListeners(mutation.target, hoveredAnchor);
         break;
 
       case 'childList':
         for (const node of mutation.addedNodes) {
-          updateEventListeners(node);
+          updateEventListeners(node, hoveredAnchor);
         }
         break;
 

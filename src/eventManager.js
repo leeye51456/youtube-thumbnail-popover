@@ -12,12 +12,18 @@ const handleMouseLeave = () => {
   hideThumbnail();
 };
 
-const addEventListenersToAnchor = (anchorNode) => {
+const addEventListenersToAnchor = (anchorNode, hoveredAnchor) => {
   anchorNode.addEventListener('mouseenter', handleAnchorMouseEnter);
   anchorNode.addEventListener('mouseleave', handleMouseLeave);
+  if (hoveredAnchor === anchorNode) {
+    anchorNode.dispatchEvent(new MouseEvent('mouseenter'));
+  }
 };
 
-const removeEventListenersFromAnchor = (anchorNode) => {
+const removeEventListenersFromAnchor = (anchorNode, hoveredAnchor) => {
+  if (hoveredAnchor === anchorNode) {
+    anchorNode.dispatchEvent(new MouseEvent('mouseleave'));
+  }
   anchorNode.removeEventListener('mouseenter', handleAnchorMouseEnter);
   anchorNode.removeEventListener('mouseleave', handleMouseLeave);
 };
@@ -37,23 +43,23 @@ const validateAnchor = (anchorNode) => {
   return hrefVideoId.startsWith(innerTextVideoIdPrefix);
 };
 
-const updateEventListenersForAnchors = (anchorNode) => {
-  removeEventListenersFromAnchor(anchorNode);
+const updateEventListenersForAnchors = (anchorNode, hoveredAnchor) => {
+  removeEventListenersFromAnchor(anchorNode, hoveredAnchor);
   if (validateAnchor(anchorNode)) {
-    addEventListenersToAnchor(anchorNode);
+    addEventListenersToAnchor(anchorNode, hoveredAnchor);
   }
 };
 
-export const findTargetsAndUpdateEventListeners = (parentNode) => {
+export const findTargetsAndUpdateEventListeners = (parentNode, hoveredAnchor) => {
   for (const anchorNode of parentNode.querySelectorAll(anchorQuery)) {
-    updateEventListenersForAnchors(anchorNode);
+    updateEventListenersForAnchors(anchorNode, hoveredAnchor);
   }
 };
 
-export const updateEventListeners = (node) => {
+export const updateEventListeners = (node, hoveredAnchor) => {
   if (node.nodeName.toUpperCase() === 'A') {
-    updateEventListenersForAnchors(node);
+    updateEventListenersForAnchors(node, hoveredAnchor);
   } else if (node.nodeType === Node.ELEMENT_NODE) {
-    findTargetsAndUpdateEventListeners(node);
+    findTargetsAndUpdateEventListeners(node, hoveredAnchor);
   }
 };
